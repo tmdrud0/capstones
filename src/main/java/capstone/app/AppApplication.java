@@ -1,5 +1,6 @@
 package capstone.app;
 
+import capstone.app.service.PdfService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

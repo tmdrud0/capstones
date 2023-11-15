@@ -18,9 +18,6 @@ public class Measurement {
     private Long id;
 
     @Column
-    private String carNumber;
-
-    @Column
     private LocalDateTime firstTime;
 
     @Column
@@ -35,17 +32,8 @@ public class Measurement {
     @Column
     private Long realWeight;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "product_id")
+    @Enumerated(EnumType.STRING)
     private Product product;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "deal_id")

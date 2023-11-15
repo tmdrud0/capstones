@@ -1,28 +1,30 @@
 package capstone.app.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
-@Entity
+@Getter
+@Embeddable
 public class Company {
 
-    @Id @GeneratedValue
-    @Column(name = "company_id")
-    private Long id;
+    private String companyName;
 
-    @Column
-    private String name;
+    private String companyAddress;
 
-    @Column
-    private String address;
+    private String companyCallNumber;
 
-    @Column
-    private String callNumber;
+    private String companyFaxNumber;
 
-    @Column
-    private String faxNumber;
+    private String companyEmail;
+
+    protected Company( ){}
+    public Company(String name, String add, String call, String fax, String email){
+        companyName = name;
+        companyAddress = add;
+        companyCallNumber = call;
+        companyFaxNumber = fax;
+        companyEmail = email;
+    }
+
 }

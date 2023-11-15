@@ -24,9 +24,13 @@ public class Deal {
     @Column
     private Long totalPrice;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "company_id")
+    @Column
+    @Embedded
     private Company company;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @JsonIgnore
     @OneToMany(mappedBy = "deal")

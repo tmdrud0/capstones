@@ -1,6 +1,5 @@
 package capstone.app.jwt;
 
-import capstone.app.domain.Authority;
 import capstone.app.domain.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -20,19 +18,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class TokenProvider implements InitializingBean {
+public class TokenProviders implements InitializingBean {
 
-    private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
+    private final Logger logger = LoggerFactory.getLogger(TokenProviders.class);
     private static final String AUTHORITIES_KEY = "auth";
-    private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final String secret = "xzAvDvGcKaPdSgVkYp3s5v8yzBkfljsdlfkjdslfksjdlksajdlaskdjaslkdjasldkasjldaskvEfHzhakdjasldkjalkfajlfkjsalkdjaskdhaksjdhkasjdM";
+    private final long tokenValidityInMilliseconds = 3000;
     private Key key;
 
-    public TokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
-        this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+    public TokenProviders() {
     }
 
     // 빈이 생성되고 주입을 받은 후에 secret값을 Base64 Decode해서 key 변수에 할당하기 위해

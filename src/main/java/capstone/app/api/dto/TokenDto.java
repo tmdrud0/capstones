@@ -1,2 +1,10 @@
-package capstone.app.api.dto;public class TokenDto {
+package capstone.app.api.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class TokenDto {
+    private String token;
 }
