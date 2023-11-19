@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,13 +18,15 @@ import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @Component
 public class TokenProviders implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(TokenProviders.class);
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret = "xzAvDvGcKaPdSgVkYp3s5v8yzBkfljsdlfkjdslfksjdlksajdlaskdjaslkdjasldkasjldaskvEfHzhakdjasldkjalkfajlfkjsalkdjaskdhaksjdhkasjdM";
-    private final long tokenValidityInMilliseconds = 3000;
+
+    private final long tokenValidityInMilliseconds = 300000;
     private Key key;
 
     public TokenProviders() {
@@ -76,16 +79,16 @@ public class TokenProviders implements InitializingBean {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 
-            logger.info("잘못된 JWT 서명입니다.");
+            logger.info("wrong JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
 
-            logger.info("만료된 JWT 토큰입니다.");
+            logger.info("expired JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {
 
-            logger.info("지원되지 않는 JWT 토큰입니다.");
+            logger.info("not supported JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
 
-            logger.info("JWT 토큰이 잘못되었습니다.");
+            logger.info("JWT token is worng.");
         }
         return false;
     }

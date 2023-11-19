@@ -41,8 +41,7 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                .and()
-                .authorizeHttpRequests()
+                .and().authorizeHttpRequests()
                 .requestMatchers("/api/authenticate").permitAll() // 로그인 api
                 .requestMatchers("/api/signup").permitAll() // 회원가입 api
                 .anyRequest().authenticated()
