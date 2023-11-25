@@ -49,6 +49,7 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "user_authority",

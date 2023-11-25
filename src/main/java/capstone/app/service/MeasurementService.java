@@ -39,7 +39,7 @@ public class MeasurementService {
         measurement.setEndWeight(endWeight);
         measurement.setRealWeight(realWeight);
         measurement.setProduct(product);
-        return measurement.getId();
+        return join(measurement);
     }
 
 }

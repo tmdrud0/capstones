@@ -26,7 +26,7 @@ public class TokenProviders implements InitializingBean {
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret = "xzAvDvGcKaPdSgVkYp3s5v8yzBkfljsdlfkjdslfksjdlksajdlaskdjaslkdjasldkasjldaskvEfHzhakdjasldkjalkfajlfkjsalkdjaskdhaksjdhkasjdM";
 
-    private final long tokenValidityInMilliseconds = 300000;
+    private final long tokenValidityInMilliseconds = 30000000;
     private Key key;
 
     public TokenProviders() {

@@ -22,7 +22,7 @@ public class DealApiController {
     private final DealService dealService;
 
     @PostMapping("/api/deals")
-    public CreateDealResponse saveDeal(@RequestBody @Valid DealApiController.CreateDealRequest request) {
+    public CreateDealResponse saveDeal(@RequestBody @Valid CreateDealRequest request) {
 
         Long id = dealService.saveDeal(request.totalPrice, request.totalWeight);
         return new CreateDealResponse(id);
@@ -32,7 +32,7 @@ public class DealApiController {
     public Result deal() {
 
         List<Deal> findDeals = dealService.findDeals();
-
+        System.out.println(findDeals);
         List<DealDto> collect = findDeals.stream()
                 .map(d -> new DealDto(d))
                 .collect(Collectors.toList());
@@ -45,13 +45,11 @@ public class DealApiController {
 
     //딜 검색
 
-
     @Data
     @AllArgsConstructor
     static class CreateDealRequest{
         private Long totalWeight;
         private Long totalPrice;
-        private Long userId;
     }
 
     @Data

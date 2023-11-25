@@ -21,7 +21,7 @@ public class DealService {
 
     private final DealRepository dealRepository;
     private final UserRepository userRepository;
-
+    private final UserService userService;
     @Transactional
     public Long join(Deal deal) {
 
@@ -34,19 +34,20 @@ public class DealService {
         return dealRepository.findAll();
     }
 
+
+
     @Transactional
     public Long saveDeal(Long totalPrice, Long totalWeight){
         Deal deal = new Deal();
         deal.setTotalPrice(totalPrice);
         deal.setTotalWeight(totalWeight);
 
-        deal.setCompany(userRepository.findCompanyByUserName(SecurityUtil.getCurrentUsername().get()));
+        User me = userService.getMyUserWithAuthorities().get();
 
-        dealRepository.save(deal);
+        deal.setUser(me);
+        deal.setCompany(me.getCompany());
 
-        return deal.getId();
+        return join(deal);
     }
-
-
 
 }

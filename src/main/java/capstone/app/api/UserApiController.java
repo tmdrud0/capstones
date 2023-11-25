@@ -2,6 +2,7 @@ package capstone.app.api;
 
 import capstone.app.api.dto.UserDto;
 import capstone.app.domain.User;
+import capstone.app.jwt.SecurityUtil;
 import capstone.app.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class UserApiController {
     @GetMapping("/api/user")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
+       // return ResponseEntity.ok(SecurityUtil.getCurrentUsername().get());
     }
 
     @GetMapping("/api/user/{username}")
