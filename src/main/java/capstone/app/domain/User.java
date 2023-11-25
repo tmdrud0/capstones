@@ -35,9 +35,6 @@ public class User {
     private String name;
 
     @Column
-    private String email;
-
-    @Column
     private String callNumber;
 
     @Column
@@ -57,10 +54,9 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private List<Authority> authorities = new ArrayList<>();
 
-    public User(String userName, String name, String email, String callNumber) {
+    public User(String userName, String name, String callNumber) {
         this.username = userName;
         this.name = name;
-        this.email = email;
         this.callNumber = callNumber;
     }
 }

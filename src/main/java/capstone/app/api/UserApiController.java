@@ -1,14 +1,23 @@
 package capstone.app.api;
 
 import capstone.app.api.dto.UserDto;
+import capstone.app.domain.Company;
+import capstone.app.domain.Product;
 import capstone.app.domain.User;
 import capstone.app.jwt.SecurityUtil;
 import capstone.app.service.UserService;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,15 +26,16 @@ public class UserApiController {
 
     @PostMapping("/api/signup")
     public ResponseEntity<User> signup(
-            @Valid @RequestBody UserDto userDto
+            @Valid @RequestBody SignUpRequest request
     ) {
-        return ResponseEntity.ok(userService.signup(userDto));
+        Company company = new Company(request.BN,request.Addr,request.TP,request.FAX,request.email);
+
+        return ResponseEntity.ok(userService.signup(new UserDto(request.username,request.password,request.name, request.CP, company)));
     }
 
     @GetMapping("/api/user")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
-       // return ResponseEntity.ok(SecurityUtil.getCurrentUsername().get());
     }
 
     @GetMapping("/api/user/{username}")
@@ -47,4 +57,26 @@ public class UserApiController {
         return "test ok";
     }
 
+    @Data
+    @AllArgsConstructor
+    static class SignUpRequest{
+        @NotNull
+        @Size(min = 3, max = 50)
+        String username;
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+        @NotNull
+        @Size(min = 3, max = 100)
+        String password;
+        @NotNull
+        @Size(min = 3, max = 50)
+        String name;
+        @NotNull
+        @Size(min = 3, max = 50)
+        String email;
+        String CP;
+        String BN;
+        String Addr;
+        String TP;
+        String FAX;
+    }
 }

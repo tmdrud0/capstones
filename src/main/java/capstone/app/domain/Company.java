@@ -19,7 +19,7 @@ public class Company {
     private String companyEmail;
 
     protected Company( ){}
-    public Company(String name, String add, String call, String fax, String email){
+    public Company(String name, String add, String call, String fax,String email){
         companyName = name;
         companyAddress = add;
         companyCallNumber = call;

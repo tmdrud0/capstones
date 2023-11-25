@@ -37,8 +37,8 @@ public class UserService {
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .name(userDto.getName())
-                .email(userDto.getEmail())
                 .callNumber(userDto.getCallNumber())
+                .company(userDto.getCompany())
                 .authorities(new ArrayList<>())
                 .activated(true)
                 .build();
