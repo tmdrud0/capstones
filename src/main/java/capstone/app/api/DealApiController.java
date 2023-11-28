@@ -1,7 +1,9 @@
 package capstone.app.api;
 
 import capstone.app.api.dto.DealDto;
+import capstone.app.api.dto.MeasurementDto;
 import capstone.app.domain.Deal;
+import capstone.app.repository.DealRepository;
 import capstone.app.service.DealService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +23,13 @@ import java.util.stream.Collectors;
 public class DealApiController {
 
     private final DealService dealService;
+    private final DealRepository dealRepository;
 
     @PostMapping("/api/deals")
-    public CreateDealResponse saveDeal(@RequestBody @Valid CreateDealRequest request) {
+    public CreateDealResponse saveDeal() {
 
-        Long id = dealService.saveDeal(request.totalPrice, request.totalWeight);
-        return new CreateDealResponse(id);
+        Long id = dealService.saveDeal();
+        return CreateDealResponse.toCreateDealResponse(dealRepository.findOne(id));
     }
 
     @GetMapping("/api/deals")
@@ -45,17 +49,39 @@ public class DealApiController {
 
     //딜 검색
 
-    @Data
-    @AllArgsConstructor
-    static class CreateDealRequest{
-        private Long totalWeight;
-        private Long totalPrice;
-    }
+
 
     @Data
-    @AllArgsConstructor
     static class CreateDealResponse{
-        private Long id;
+        private LocalDateTime date;
+        private List<String> licenseNum;
+        private List<SimpleMeasurement> measurements;
+
+        static class SimpleMeasurement{
+            private String name;
+            private Long weight;
+            private Double unitPrice;
+            private Double totalPrice;
+
+            public static SimpleMeasurement toSimpleMeasurement(MeasurementDto measurementDto){
+                SimpleMeasurement result = new SimpleMeasurement();
+                result.name = measurementDto.name;
+                result.weight = measurementDto.weight;
+                result.unitPrice = measurementDto.unitPrice;
+                result.totalPrice = measurementDto.totalPrice;
+                return result;
+            }
+        }
+
+        static public CreateDealResponse toCreateDealResponse(Deal deal){
+            CreateDealResponse result = new CreateDealResponse();
+
+            result.date = deal.getTime();
+            result.licenseNum = deal.getCarDto().stream().map(c -> c.licenseNum).collect(Collectors.toList());
+            result.measurements = deal.getMeasurementDto().stream().map(SimpleMeasurement::toSimpleMeasurement).collect(Collectors.toList());
+
+            return result;
+        }
     }
 
 }

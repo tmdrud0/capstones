@@ -24,7 +24,8 @@ public class DealRepository {
 
     public List<Deal> findAll() {
         return em.createQuery(
-                        "select distinct d from Deal d"
+                        "select distinct d from Deal d" //+
+                              //  " join fetch d.measurements m"
                                 , Deal.class)
                 .getResultList();
     }

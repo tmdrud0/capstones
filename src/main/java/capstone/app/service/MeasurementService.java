@@ -1,23 +1,21 @@
 package capstone.app.service;
 
-import capstone.app.domain.Deal;
 import capstone.app.domain.Measurement;
-import capstone.app.domain.Product;
-import capstone.app.repository.DealRepository;
+import capstone.app.domain.User;
+import capstone.app.jwt.SecurityUtil;
 import capstone.app.repository.MeasurementRepository;
-import capstone.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MeasurementService {
     private final MeasurementRepository measurementRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
+
     @Transactional
     public Long join(Measurement measurement) {
 
@@ -30,15 +28,15 @@ public class MeasurementService {
         return measurementRepository.findAll();
     }
 
+    public List<Measurement> findMyNotDealMeasurements() {
+        return measurementRepository.findMyNotDeal(SecurityUtil.getCurrentUserId().get());
+    }
+
     @Transactional
-    public Long saveMeasurement(LocalDateTime firstTime, LocalDateTime endTime, Long firstWeight, Long endWeight, Long realWeight, Product product){
-        Measurement measurement = new Measurement();
-        measurement.setFirstTime(firstTime);
-        measurement.setEndTime(endTime);
-        measurement.setFirstWeight(firstWeight);
-        measurement.setEndWeight(endWeight);
-        measurement.setRealWeight(realWeight);
-        measurement.setProduct(product);
+    public Long saveMeasurement(Measurement measurement){
+        User me = userService.getMyUserWithAuthorities().get();
+        measurement.setUser(me);
+
         return join(measurement);
     }
 

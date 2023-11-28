@@ -1,19 +1,11 @@
 package capstone.app.api;
 
-import capstone.app.api.dto.MeasurementDto;
 import capstone.app.domain.Measurement;
-import capstone.app.domain.Product;
-import capstone.app.repository.MeasurementRepository;
 import capstone.app.service.MeasurementService;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static java.util.stream.Collectors.toList;
 
@@ -31,34 +22,48 @@ public class MeasurementApiController {
 
     private final MeasurementService measurementService;
 
-    @GetMapping("/api/measurements")
-    public Result measurements() {
-        List<Measurement> measurements = measurementService.findMeasurements();
-        List<MeasurementDto> result = measurements.stream()
-                .map(m -> new MeasurementDto(m))
-                .collect(toList());
-        return new Result(result);
-    }
-
     @PostMapping("/api/measurements")
     public CreateMeasurementResponse saveDeal(@RequestBody @Valid CreateMeasurementRequest request) {
-        Long id = measurementService.saveMeasurement(request.firstTime, request.endTime, request.firstWeight, request.endWeight, request.realWeight, request.product);
+        Long id = measurementService.saveMeasurement(request.toMeasurement());
         return new MeasurementApiController.CreateMeasurementResponse(id);
     }
 
     @Data
     @AllArgsConstructor
     static class CreateMeasurementRequest{
-        private LocalDateTime firstTime;
-        private LocalDateTime endTime;
+        private LocalDateTime date;
+        private String liscenseNum;
+        private String client;
+        private String item;
+        private Long totalWeight;
+        private Long emptyWeight;
+        private Long actualWeight;
+        private Double unitCost;
+        private String note;
+        private String driverName;
+        private String driverTP;
+        private LocalDateTime enterTime;
+        private LocalDateTime departTime;
 
-        private Long firstWeight;
+        public Measurement toMeasurement(){
+            Measurement measurement = new Measurement();
 
-        private Long endWeight;
+            measurement.setDate(date);
+            measurement.setLiscenseNum(liscenseNum);
+            measurement.setClient(client);
+            measurement.setItem(item);
+            measurement.setTotalWeight(totalWeight);
+            measurement.setEmptyWeight(emptyWeight);
+            measurement.setActualWeight(actualWeight);
+            measurement.setUnitCost(unitCost);
+            measurement.setNote(note);
+            measurement.setDriverName(driverName);
+            measurement.setDriverTP(driverTP);
+            measurement.setEnterTime(enterTime);
+            measurement.setDepartTime(departTime);
 
-        private Long realWeight;
-
-        private Product product;
+            return measurement;
+        }
     }
 
     @Data

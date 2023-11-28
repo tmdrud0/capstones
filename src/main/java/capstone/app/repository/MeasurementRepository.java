@@ -24,4 +24,10 @@ public class MeasurementRepository {
         return em.createQuery("select m from Measurement m", Measurement.class)
                 .getResultList();
     }
+
+    public List<Measurement> findMyNotDeal(Long userid) {
+        return em.createQuery("select m from Measurement m where m.user_id = :userid AND deal_id = null", Measurement.class)
+                .setParameter("userid", userid)
+                .getResultList();
+    }
 }

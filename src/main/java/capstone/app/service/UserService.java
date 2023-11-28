@@ -2,6 +2,8 @@ package capstone.app.service;
 
 import capstone.app.api.dto.UserDto;
 import capstone.app.domain.*;
+import capstone.app.exception.CustomException;
+import capstone.app.exception.ErrorCode;
 import capstone.app.jwt.SecurityUtil;
 import capstone.app.repository.DealRepository;
 import capstone.app.repository.UserRepository;
@@ -23,7 +25,7 @@ public class UserService {
     @Transactional
     public User signup(UserDto userDto) {
         if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            throw new CustomException(ErrorCode.ALREADY_PRESENT);
         }
 
         // 가입되어 있지 않은 회원이면,
@@ -69,13 +71,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<Product> getDealProductsWithMe() {
+    public List<String> getDealProductsWithMe() {
         List<Deal> MyDeals = dealRepository.findByUsername(SecurityUtil.getCurrentUsername().get());
 
         return MyDeals.stream()
                 .map(Deal::getMeasurements)
                 .flatMap(Collection::stream)
-                .map(Measurement::getProduct)
+                .map(Measurement::getItem)
                 .toList();
     }
 }

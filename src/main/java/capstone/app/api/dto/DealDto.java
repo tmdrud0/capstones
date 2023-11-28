@@ -12,16 +12,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DealDto {
     private Long totalWeight;
-    private Long totalPrice;
+    private Double totalPrice;
     private Company company;
 
-    private List<MeasurementDto> measurements;
     public DealDto(Deal deal){
         this.totalPrice = deal.getTotalPrice();
         this.totalWeight = deal.getTotalWeight();
         this.company = deal.getCompany();
-        this.measurements = deal.getMeasurements().stream()
-                .map(m -> new MeasurementDto(m))
-                .collect(Collectors.toList());
+
     }
 }

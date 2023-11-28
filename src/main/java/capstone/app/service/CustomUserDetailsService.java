@@ -1,6 +1,8 @@
 package capstone.app.service;
 
 import capstone.app.domain.User;
+import capstone.app.exception.CustomException;
+import capstone.app.exception.ErrorCode;
 import capstone.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return userRepository.findOneWithAuthoritiesByUsername(username)
                 .map(user -> createUser(username, user))
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
     }
 
     private org.springframework.security.core.userdetails.User createUser(String username, User user) {

@@ -2,9 +2,7 @@ package capstone.app.api;
 
 import capstone.app.api.dto.UserDto;
 import capstone.app.domain.Company;
-import capstone.app.domain.Product;
 import capstone.app.domain.User;
-import capstone.app.jwt.SecurityUtil;
 import capstone.app.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
@@ -14,10 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +26,7 @@ public class UserApiController {
         Company company = new Company(request.BN,request.Addr,request.TP,request.FAX,request.email);
 
         return ResponseEntity.ok(userService.signup(new UserDto(request.username,request.password,request.name, request.CP, company)));
+
     }
 
     @GetMapping("/api/user")
@@ -60,11 +56,11 @@ public class UserApiController {
     @Data
     @AllArgsConstructor
     static class SignUpRequest{
-        @NotNull
-        @Size(min = 3, max = 50)
+        @NotNull(message = "id가 비어있을 수 없습니다!")
+        @Size(min = 3, max = 50, message = "id 길이 이상")
         String username;
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        @NotNull
+        @NotNull(message = "password가 비어있을 수 없습니다!")
         @Size(min = 3, max = 100)
         String password;
         @NotNull

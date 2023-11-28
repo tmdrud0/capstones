@@ -18,22 +18,35 @@ public class Measurement {
     private Long id;
 
     @Column
-    private LocalDateTime firstTime;
-
+    private LocalDateTime date;
     @Column
-    private LocalDateTime endTime;
-
+    private String liscenseNum;
     @Column
-    private Long firstWeight;
-
+    private String client;
     @Column
-    private Long endWeight;
-
+    private String item;
     @Column
-    private Long realWeight;
+    private Long totalWeight;
+    @Column
+    private Long emptyWeight;
+    @Column
+    private Long actualWeight;
+    @Column
+    private Double unitCost;
+    @Column
+    private String note;
+    @Column
+    private String driverName;
+    @Column
+    private String driverTP;
+    @Column
+    private LocalDateTime enterTime;
+    @Column
+    private LocalDateTime departTime;
 
-    @Enumerated(EnumType.STRING)
-    private Product product;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "deal_id")
