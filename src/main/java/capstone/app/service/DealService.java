@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +39,7 @@ public class DealService {
 
         deal.setUser(me);
         deal.setCompany(me.getCompany());
+        deal.setTime(LocalDateTime.now());
         deal.setPdf(deal.getTime().toString()+".pdf");
 
         deal.setMeasurements(measurementService.findMyNotDealMeasurements());

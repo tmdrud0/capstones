@@ -87,10 +87,10 @@ public class PdfRepository {
             this.document = document;
         }
 
-        private final String CAR_FRONT = "carLnumFront.png";
-        private final String CAR_BACK = "carLnumBack.png";
-        private final String CAR_FIRST = "picCar1st.png";
-        private final String CAR_SECOND = "picCar2nd.png";
+        private final String CAR_FRONT = "carLnumFront.jpg";
+        private final String CAR_BACK = "carLnumBack.jpg";
+        private final String CAR_FIRST = "picCar1st.jpg";
+        private final String CAR_SECOND = "picCar2nd.jpg";
 
         private String getPath(Measurement measurement, String username){
             return "resources/images/" + username + "/" + measurement.getId() + "/";
