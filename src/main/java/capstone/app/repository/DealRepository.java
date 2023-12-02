@@ -34,11 +34,23 @@ public class DealRepository {
         return em.createQuery(
                         "select d from Deal d" +
                                 " join fetch d.user u" +
-                                " where u.username = :username"
+                                " where u.username = :username" +
+                                " order by d.time desc "
                         , Deal.class)
                 .setParameter("username", username)
                 .setFirstResult(0)
                 .setMaxResults(10)
                 .getResultList();
+    }
+
+    public Deal findRecent(String username) {
+        return em.createQuery(
+                        "select d from Deal d" +
+                                " join fetch d.user u" +
+                                " where u.username = :username"+
+                                " order by d.time desc"
+                        , Deal.class)
+                .setParameter("username", username)
+                .getSingleResult();
     }
 }

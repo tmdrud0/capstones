@@ -1,5 +1,6 @@
 package capstone.app.repository;
 
+import capstone.app.domain.Deal;
 import capstone.app.domain.Measurement;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,16 @@ public class MeasurementRepository {
         return em.createQuery("select m from Measurement m where m.user.id = :userid AND m.deal.id is NULL", Measurement.class)
                 .setParameter("userid", userid)
                 .getResultList();
+    }
+
+    public Measurement findRecent(String username) {
+        return em.createQuery(
+                        "select m from Measurement m" +
+                                " join fetch m.user u" +
+                                " where u.username = :username"+
+                                "order by m.time enterTime"
+                        , Measurement.class)
+                .setParameter("username", username)
+                .getSingleResult();
     }
 }

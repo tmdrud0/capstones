@@ -53,7 +53,6 @@ public class SecurityUtil {
         } else if (authentication.getPrincipal() instanceof Long) {
             id = (Long) authentication.getPrincipal();
         }
-
         return Optional.ofNullable(id);
     }
 }

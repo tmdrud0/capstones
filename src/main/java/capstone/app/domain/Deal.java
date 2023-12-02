@@ -38,6 +38,9 @@ public class Deal {
     @Column
     private LocalDateTime time;
 
+    @Column
+    private String pdf;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;

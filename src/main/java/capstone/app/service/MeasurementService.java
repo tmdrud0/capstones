@@ -1,8 +1,10 @@
 package capstone.app.service;
 
+import capstone.app.domain.Deal;
 import capstone.app.domain.Measurement;
 import capstone.app.domain.User;
 import capstone.app.jwt.SecurityUtil;
+import capstone.app.repository.LocalRepository;
 import capstone.app.repository.MeasurementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 public class MeasurementService {
     private final MeasurementRepository measurementRepository;
     private final UserService userService;
+    private final LocalService localService;
 
     @Transactional
     public Long join(Measurement measurement) {
@@ -37,7 +40,13 @@ public class MeasurementService {
         User me = userService.getMyUserWithAuthorities().get();
         measurement.setUser(me);
 
-        return join(measurement);
-    }
+        Long id = join(measurement);
+        localService.changeNewToId(id);
 
+        return id;
+    }
+    @Transactional
+    public Measurement getRecent(){
+        return measurementRepository.findRecent(userService.getMyUserWithAuthorities().get().getUsername());
+    }
 }

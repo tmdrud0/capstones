@@ -32,15 +32,22 @@ public class DealApiController {
     }
 
     @GetMapping("/api/deals")
-    public Result deal() {
-
+    public List<DealDto> getDeals() {
         List<Deal> findDeals = dealService.findDeals();
-        System.out.println(findDeals);
         List<DealDto> collect = findDeals.stream()
                 .map(d -> new DealDto(d))
                 .collect(Collectors.toList());
 
-        return new Result(collect);
+        return collect;
+    }
+
+    @GetMapping("/api/myDeals")
+    public List<DealDto> getMyDeals() {
+        List<Deal> findDeals = dealService.getMyDeals();
+        List<DealDto> collect = findDeals.stream()
+                .map(d -> new DealDto(d))
+                .collect(Collectors.toList());
+        return collect;
     }
     //딜 페이징, 날짜순
 
