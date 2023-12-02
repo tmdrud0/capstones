@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static java.lang.Math.max;
@@ -46,13 +47,13 @@ public class Deal {
     private List<Measurement> measurements = new ArrayList<>();
 
     public List<MeasurementDto> getMeasurementDto(){
-        List<MeasurementDto> result = new ArrayList<MeasurementDto>();
-        measurements.forEach(m -> new MeasurementDto(m.getItem(),m.getActualWeight(),m.getUnitCost(),m.getActualWeight() * m.getUnitCost(),m.getEnterTime(),m.getDepartTime()));
+        List<MeasurementDto> result =  measurements.stream().map(m -> new MeasurementDto(m.getItem(),m.getActualWeight(),m.getUnitCost(),m.getActualWeight() * m.getUnitCost(),m.getEnterTime(),m.getDepartTime()))
+                .collect(Collectors.toList());
         return result;
-
     }
 
     public List<CarDto> getCarDto(){
+
         List<CarDto> result = new ArrayList<CarDto>();
         measurements.forEach(m->result.stream().filter(r->r.licenseNum.equals(m.getLiscenseNum()))
                 .findFirst()
@@ -67,7 +68,7 @@ public class Deal {
     }
 
     public Long makeTotalWeight (){
-        return getMeasurementDto().stream().map(m->m.weight).reduce(0L, Long::sum);
+        return getMeasurementDto().stream().map(m->m.weight).mapToLong(l->l).sum();
     }
     public Double makeTotalPrice (){
         return getMeasurementDto().stream().map(m->m.totalPrice).reduce(0.D, Double::sum);

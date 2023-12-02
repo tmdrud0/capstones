@@ -23,10 +23,7 @@ public class UserApiController {
     public ResponseEntity<User> signup(
             @Valid @RequestBody SignUpRequest request
     ) {
-        Company company = new Company(request.BN,request.Addr,request.TP,request.FAX,request.email);
-
-        return ResponseEntity.ok(userService.signup(new UserDto(request.username,request.password,request.name, request.CP, company)));
-
+        return ResponseEntity.ok(userService.signup(request.toUser()));
     }
 
     @GetMapping("/api/user")
@@ -74,5 +71,12 @@ public class UserApiController {
         String Addr;
         String TP;
         String FAX;
+
+        public User toUser(){
+            Company company = new Company(BN,Addr,TP,FAX,email);
+            User user = new User(username, name, CP, company);
+            user.setPassword(password);
+            return user;
+        }
     }
 }

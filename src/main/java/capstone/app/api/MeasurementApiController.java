@@ -22,7 +22,8 @@ public class MeasurementApiController {
 
     private final MeasurementService measurementService;
 
-    @PostMapping("/api/measurements")
+    //@PostMapping("/api/measurements")
+    @PostMapping("/sendWeighData")
     public CreateMeasurementResponse saveDeal(@RequestBody @Valid CreateMeasurementRequest request) {
         Long id = measurementService.saveMeasurement(request.toMeasurement());
         return new MeasurementApiController.CreateMeasurementResponse(id);

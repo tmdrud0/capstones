@@ -1,7 +1,10 @@
 package capstone.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,11 +39,9 @@ public class User {
 
     @Column
     private String callNumber;
-
     @Column
     @Embedded
     private Company company;
-
 
     @JsonIgnore
     @Column(name = "activated")
@@ -54,9 +55,10 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private List<Authority> authorities = new ArrayList<>();
 
-    public User(String userName, String name, String callNumber) {
+    public User(String userName, String name, String callNumber, Company company) {
         this.username = userName;
         this.name = name;
         this.callNumber = callNumber;
+        this.company = company;
     }
 }

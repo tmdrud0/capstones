@@ -33,12 +33,12 @@ public class DealService {
         Deal deal = new Deal();
 
         User me = userService.getMyUserWithAuthorities().get();
-        deal.setTotalPrice(deal.makeTotalPrice());
 
         deal.setUser(me);
         deal.setCompany(me.getCompany());
 
         deal.setMeasurements(measurementService.findMyNotDealMeasurements());
+        deal.getMeasurements().forEach(m->m.setDeal(deal));
         deal.setTotalPrice(deal.makeTotalPrice());
         deal.setTotalWeight(deal.makeTotalWeight());
 

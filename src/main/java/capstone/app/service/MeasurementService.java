@@ -29,7 +29,7 @@ public class MeasurementService {
     }
 
     public List<Measurement> findMyNotDealMeasurements() {
-        return measurementRepository.findMyNotDeal(SecurityUtil.getCurrentUserId().get());
+        return measurementRepository.findMyNotDeal(userService.getMyUserWithAuthorities().get().getUserId());
     }
 
     @Transactional

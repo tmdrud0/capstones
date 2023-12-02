@@ -67,7 +67,7 @@ public class TokenProviders implements InitializingBean {
 
         Collection<? extends GrantedAuthority> authorities =
                 new ArrayList<>();
-        User principal = new User(claims.getSubject()," ","");
+        User principal = new User(claims.getSubject()," ","",null);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
