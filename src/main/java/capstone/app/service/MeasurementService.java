@@ -39,6 +39,7 @@ public class MeasurementService {
     public Long saveMeasurement(Measurement measurement){
         User me = userService.getMyUserWithAuthorities().get();
         measurement.setUser(me);
+        measurement.setActualWeight(measurement.getTotalWeight() - measurement.getEmptyWeight());
 
         Long id = join(measurement);
         localService.changeNewToId(id);

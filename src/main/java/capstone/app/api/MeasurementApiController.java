@@ -50,13 +50,6 @@ public class MeasurementApiController {
         }).collect(toList());
     }
 
-
-
-
-
-
-
-
     @Data
     @AllArgsConstructor
     static class CreateMeasurementRequest{
@@ -64,9 +57,9 @@ public class MeasurementApiController {
         private String liscenseNum;
         private String client;
         private String item;
-        private Long totalWeight;
-        private Long emptyWeight;
-        private Long actualWeight;
+        private Double totalWeight;
+        private Double emptyWeight;
+        private Double actualWeight;
         private Double unitCost;
         private String note;
         private String driverName;
@@ -81,9 +74,9 @@ public class MeasurementApiController {
             measurement.setLiscenseNum(liscenseNum);
             measurement.setClient(client);
             measurement.setItem(item);
-            measurement.setTotalWeight(totalWeight);
-            measurement.setEmptyWeight(emptyWeight);
-            measurement.setActualWeight(actualWeight);
+            measurement.setTotalWeight(totalWeight.longValue());
+            measurement.setEmptyWeight(emptyWeight.longValue());
+            measurement.setActualWeight(actualWeight.longValue());
             measurement.setUnitCost(unitCost);
             measurement.setNote(note);
             measurement.setDriverName(driverName);
