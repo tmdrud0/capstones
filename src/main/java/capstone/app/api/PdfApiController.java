@@ -33,10 +33,10 @@ public class PdfApiController {
 
     //@PostMapping("/api/image")
     @PostMapping("/upload")
-    public UploadResponse uploadImage(@RequestBody MultipartFile file) {
+    public String uploadImage(@RequestBody MultipartFile file) {
 
         localService.saveImage(file);
-        return new UploadResponse("test-string");
+        return "uploaded";
     }
     @PostMapping("/upload/totalWeight")
     public ResponseEntity uploadTotalWeight(@RequestBody MultipartFile file) {
@@ -96,7 +96,5 @@ public class PdfApiController {
         } catch (Exception e) {
             throw new CustomException(ErrorCode.PDF_READ_FAIL);
         }
-
-
     }
 }
