@@ -64,15 +64,15 @@ public class PdfApiController {
     }
 
     //@GetMapping("/api/pdf/{id}")
-    @GetMapping("/pdfs/{id}")
-    public ResponseEntity<?> getById(@RequestHeader Long id) {
+    @GetMapping("/pdfs")
+    public ResponseEntity<?> getById(@RequestBody Long id) {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("application/pdf"))
                 .body(pdfService.getById(id));
     }
 
     //@GetMapping("/api/pdfs")
-    @GetMapping("/api/transactionList")
+    @GetMapping("/transactionList")
     public List<PdfDto> getAllOfMine() {
         return pdfService.getAllOfMine();
     }
