@@ -76,7 +76,7 @@ public class MeasurementApiController {
             measurement.setItem(item);
             measurement.setTotalWeight(totalWeight.longValue());
             measurement.setEmptyWeight(emptyWeight.longValue());
-            measurement.setActualWeight(actualWeight.longValue());
+            measurement.setActualWeight(totalWeight.longValue()+emptyWeight.longValue());
             measurement.setUnitCost(unitCost);
             measurement.setNote(note);
             measurement.setDriverName(driverName);

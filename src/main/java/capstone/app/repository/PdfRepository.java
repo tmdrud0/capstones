@@ -26,6 +26,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
@@ -51,8 +53,9 @@ public class PdfRepository {
     }
     public void generatePdf(Deal deal){
         try {
-
-            PdfWriter writer = new PdfWriter(getPath() + deal.getPdf());
+            String path = getPath();
+            Files.createDirectories(Path.of(path));
+            PdfWriter writer = new PdfWriter(path + deal.getPdf());
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
