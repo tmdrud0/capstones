@@ -64,9 +64,11 @@ public class Deal {
                     r.totalWeight = max(r.totalWeight, m.getTotalWeight());
                     r.emptyWeight = min(r.emptyWeight, m.getEmptyWeight());
                     r.actualWeight = r.totalWeight - r.emptyWeight;
+
                 },
         () -> result.add(new CarDto(m.getDate(),m.getLiscenseNum(),m.getTotalWeight(),m.getEmptyWeight(),m.getActualWeight()))));
-
+        System.out.println(measurements.get(0).getDate());
+        System.out.println(result.get(0));
         return result;
     }
 

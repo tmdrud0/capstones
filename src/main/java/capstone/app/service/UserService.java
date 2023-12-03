@@ -8,6 +8,8 @@ import capstone.app.jwt.SecurityUtil;
 import capstone.app.repository.DealRepository;
 import capstone.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +37,28 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // 유저,권한 정보를 가져오는 메소드
+    @Transactional
+    public User putUser(User user){
+        User me = getMyUserWithAuthorities().get();
+
+        if(user.getPassword() != null)
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        me.setPassword(user.getPassword()==null?me.getPassword():user.getPassword());
+        me.setName(user.getName()==null?me.getName():user.getName());
+        me.setCallNumber(user.getCallNumber()==null?me.getCallNumber():user.getCallNumber());
+
+        Company myCompany = me.getCompany(), company = user.getCompany();
+
+        myCompany.setCompanyAddress(company.getCompanyAddress()==null? myCompany.getCompanyAddress() : company.getCompanyAddress());
+        myCompany.setCompanyEmail(company.getCompanyEmail()==null? myCompany.getCompanyEmail() : company.getCompanyEmail());
+        myCompany.setCompanyName(company.getCompanyName()==null? myCompany.getCompanyName() : company.getCompanyName());
+        myCompany.setCompanyCallNumber(company.getCompanyCallNumber()==null?myCompany.getCompanyCallNumber():company.getCompanyCallNumber());
+        myCompany.setCompanyFaxNumber(company.getCompanyFaxNumber()==null?myCompany.getCompanyFaxNumber():company.getCompanyFaxNumber());
+
+        return me;
+    }
+
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities(String username) {
         return userRepository.findOneWithAuthoritiesByUsername(username);
@@ -44,8 +67,13 @@ public class UserService {
     // 현재 securityContext에 저장된 username의 정보만 가져오는 메소드
     @Transactional(readOnly = true)
     public Optional<User> getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUsername()
-                .flatMap(userRepository::findOneWithAuthoritiesByUsername);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(principal==null);
+        User user = (User)principal;
+
+        String username = user.getUsername();
+        return userRepository.findOneWithAuthoritiesByUsername(username);
+        //return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername);
     }
 
     @Transactional(readOnly = true)

@@ -28,7 +28,8 @@ public enum ErrorCode {
 
 
     FILE_WRITE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"파일 쓰기에 실패했습니다."),
-    IMAGE_NAME_CHANGE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"이미지 디렉토리 이름 변경에 실패했습니다.")
+    IMAGE_NAME_CHANGE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"이미지 디렉토리 이름 변경에 실패했습니다."),
+    OCR_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"OCR에 실패했습니다.")
     ;
 
     private final HttpStatus httpStatus;

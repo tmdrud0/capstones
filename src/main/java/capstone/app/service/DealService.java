@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -40,16 +41,19 @@ public class DealService {
         deal.setUser(me);
         deal.setCompany(me.getCompany());
         deal.setTime(LocalDateTime.now());
-        deal.setPdf(deal.getTime().toString()+".pdf");
 
         deal.setMeasurements(measurementService.findMyNotDealMeasurements());
         deal.getMeasurements().forEach(m->m.setDeal(deal));
         deal.setTotalPrice(deal.makeTotalPrice());
         deal.setTotalWeight(deal.makeTotalWeight());
+        String client = deal.getMeasurements().get(0).getClient();
 
+        deal.setPdf(deal.getTime().format(DateTimeFormatter.ofPattern("yy년MM월dd일HH시mm분_"))+client+".pdf");
+
+        deal.getMeasurements().stream().forEach(m-> System.out.println(m.getDate()));
+        Long id = join(deal);
         pdfRepository.generatePdf(deal);
-
-        return join(deal);
+        return id;
     }
 
     @Transactional

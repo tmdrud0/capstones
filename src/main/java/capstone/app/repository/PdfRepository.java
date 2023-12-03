@@ -62,13 +62,12 @@ public class PdfRepository {
 
             DealGenerator dealGenerator = new DealGenerator(document);
             dealGenerator.generate(deal);
-            document.add(new AreaBreak());
 
             MeasurementGenerator measurementGenerator = new MeasurementGenerator(document);
             for(int i = 0; i < deal.getMeasurements().size();i++)
             {
-                measurementGenerator.generate(deal.getMeasurements().get(i),userService.getMyUserWithAuthorities().get().getUsername());
                 document.add(new AreaBreak());
+                measurementGenerator.generate(deal.getMeasurements().get(i),userService.getMyUserWithAuthorities().get().getUsername());
             }
 
             document.close();

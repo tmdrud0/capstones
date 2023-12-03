@@ -25,10 +25,10 @@ public class DealApiController {
 
     //@PostMapping("/api/deals")
     @PostMapping("/api/done")
-    public DealResponse saveDeal() {
+    public Long saveDeal() {
 
         Long id = dealService.saveDeal();
-        return DealResponse.toCreateDealResponse(dealRepository.findOne(id));
+        return id;
     }
 
     @GetMapping("/api/deals")

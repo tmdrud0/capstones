@@ -8,7 +8,7 @@ spring:
     throw-exception-if-no-handler-found: true
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto:
     properties:
       hibernate:
         show_sql: true
@@ -16,6 +16,9 @@ spring:
         default_batch_fetch_size: 100
   main:
     allow-circular-references: true
+  servlet:
+    multipart:
+      maxFileSize: 10MB
 
 logging.level:
   org.hibernate.SQL: debug

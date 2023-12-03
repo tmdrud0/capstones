@@ -4,6 +4,7 @@ import capstone.app.api.dto.PdfDto;
 import capstone.app.exception.CustomException;
 import capstone.app.exception.ErrorCode;
 import capstone.app.service.LocalService;
+import capstone.app.service.OcrService;
 import capstone.app.service.PdfService;
 import capstone.app.service.UserService;
 import lombok.AllArgsConstructor;
@@ -26,38 +27,32 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class PdfApiController {
-    private final UserService userService;
     private final LocalService localService;
     private final PdfService pdfService;
+    private final OcrService ocrService;
 
     //@PostMapping("/api/image")
     @PostMapping("/upload")
     public UploadResponse uploadImage(@RequestBody MultipartFile file) {
 
         localService.saveImage(file);
-
         return new UploadResponse("test-string");
     }
     @PostMapping("/upload/totalWeight")
-    public UploadResponse uploadTotalWeight(@RequestBody MultipartFile file) {
+    public ResponseEntity uploadTotalWeight(@RequestBody MultipartFile file) {
 
-        localService.saveImage(file);
-
-        return new UploadResponse("test-string");
+        return ocrService.sendWeight(file);
     }
     @PostMapping("/upload/emptyWeight")
-    public UploadResponse uploadEmptyWeight(@RequestBody MultipartFile file) {
+    public ResponseEntity uploadEmptyWeight(@RequestBody MultipartFile file) {
 
-        localService.saveImage(file);
-
-        return new UploadResponse("test-string");
+        return ocrService.sendWeight(file);
     }
     @PostMapping("/upload/carnum")
-    public UploadResponse uploadCarNum(@RequestBody MultipartFile file) {
+    public ResponseEntity uploadCarNum(@RequestBody MultipartFile file) {
 
         localService.saveImage(file);
-
-        return new UploadResponse("test-string");
+        return ocrService.sendCar(file);
     }
 
     //@GetMapping("/api/recentPdf")
@@ -76,7 +71,8 @@ public class PdfApiController {
                 .body(pdfService.getById(id));
     }
 
-    @GetMapping("/pdfs")
+    //@GetMapping("/api/pdfs")
+    @GetMapping("/api/transactionList")
     public List<PdfDto> getAllOfMine() {
         return pdfService.getAllOfMine();
     }

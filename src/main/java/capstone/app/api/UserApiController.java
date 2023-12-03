@@ -26,6 +26,13 @@ public class UserApiController {
         return ResponseEntity.ok(userService.signup(request.toUser()));
     }
 
+    @PutMapping("/api/user")
+    public ResponseEntity<User> changeInfo(
+            @RequestBody SignUpRequest request
+    ) {
+        return ResponseEntity.ok(userService.putUser(request.toUser()));
+    }
+
     @GetMapping("/api/user")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());

@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class PdfDto {
-    private String name;
+    private String transactinName;
     private Long id;
 
     static public PdfDto dealToPdfDto(Deal deal){

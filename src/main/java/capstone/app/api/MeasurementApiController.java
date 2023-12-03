@@ -24,10 +24,38 @@ public class MeasurementApiController {
 
     //@PostMapping("/api/measurements")
     @PostMapping("/sendWeighData")
-    public CreateMeasurementResponse saveDeal(@RequestBody @Valid CreateMeasurementRequest request) {
+    public CreateMeasurementResponse saveMeasurement(@RequestBody @Valid CreateMeasurementRequest request) {
         Long id = measurementService.saveMeasurement(request.toMeasurement());
         return new MeasurementApiController.CreateMeasurementResponse(id);
     }
+    @GetMapping("/api/measurements")
+    public List<CreateMeasurementRequest> getMeasurements() {
+        return measurementService.findMeasurements().stream().map(m ->{
+            CreateMeasurementRequest c = new CreateMeasurementRequest(
+                    m.getDate(),
+                    m.getLiscenseNum(),
+                    m.getClient(),
+                    m.getItem(),
+                    m.getEmptyWeight(),
+                    m.getTotalWeight(),
+                    m.getActualWeight(),
+                    m.getUnitCost(),
+                    m.getNote(),
+                    m.getDriverName(),
+                    m.getDriverTP(),
+                    m.getEnterTime(),
+                    m.getDepartTime()
+            );
+            return c;
+        }).collect(toList());
+    }
+
+
+
+
+
+
+
 
     @Data
     @AllArgsConstructor
@@ -49,7 +77,7 @@ public class MeasurementApiController {
         public Measurement toMeasurement(){
             Measurement measurement = new Measurement();
 
-            measurement.setDate(date);
+            measurement.setDate(LocalDateTime.now());
             measurement.setLiscenseNum(liscenseNum);
             measurement.setClient(client);
             measurement.setItem(item);

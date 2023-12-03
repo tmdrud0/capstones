@@ -51,6 +51,8 @@ public class DealRepository {
                                 " order by d.time desc"
                         , Deal.class)
                 .setParameter("username", username)
+                .setFirstResult(0)
+                .setMaxResults(1)
                 .getSingleResult();
     }
 }
